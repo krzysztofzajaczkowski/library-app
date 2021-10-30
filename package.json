@@ -7,8 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha",
-    "ci-test": "mocha --ciMode=true"
+    "test": "mocha --recursive",
+    "ci-test": "mocha --ciMode=true --recursive"
   },
   "repository": {
     "type": "git",

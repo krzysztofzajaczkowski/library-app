@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var Book = require('../src/entities/Book');
+var Book = require('../../src/v2/entities/Book');
 
 describe('book-tests', function()
 {
@@ -134,4 +134,18 @@ describe('book-tests', function()
         book.return();
         expect(book.isAvailable()).to.eql(true);
     });
+
+    it('should return undefined when trying to access "prototype" field', function() {
+        expect(book.prototype).to.eql(undefined);
+    })
+
+    it('should return undefined when trying to access "constructor._prototype" field', function() {
+        expect(book.constructor._prototype).to.eql(undefined);
+    })
+
+    it('should return value set in new prototype field when calling field in existing object', function() {
+        let testValue = "TestValue";
+        Book.prototype.newField = testValue
+        expect(book.newField).to.eql(testValue);
+    })
 });
