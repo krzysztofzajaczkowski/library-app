@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var Book = require('../src/entities/Book');
+var Book = require('../../src/v1/entities/Book');
 
 describe('book-tests', function()
 {
