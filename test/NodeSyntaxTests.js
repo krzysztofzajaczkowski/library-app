@@ -1,4 +1,5 @@
 var expect = require('chai').expect;
+var argv = require('optimist').argv;
 
 describe('node-syntax-tests', function() 
 {
@@ -199,6 +200,12 @@ describe('node-syntax-tests', function()
 
     it('should not throw when using replaceAll for strings', function()
     {
+        // skip this test in continuous integration
+        if(argv.ciMode)
+        {
+            this.skip();
+        }
+
         expect(() =>
             eval(
                 `
