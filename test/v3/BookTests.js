@@ -1,6 +1,8 @@
 var expect = require('chai').expect;
 var Book = require('../../src/v3/entities/Book');
 var BookBorrow = require('../../src/v3/entities/BookBorrow');
+var DateUtils = require('./utils/DateUtils');
+var LibraryUtils = require('./utils/LibraryUtils');
 
 describe('book-tests', function()
 {
@@ -17,8 +19,7 @@ describe('book-tests', function()
 
     beforeEach(function() {
         book = new Book(bookValues.number, bookValues.title, bookValues.author, bookValues.releaseYear, bookValues.price);
-        dueDate = new Date();
-        dueDate.setDate(dueDate.getDate() + 4);
+        dueDate = DateUtils.WithAddedDays(new Date(), 4);
         bookBorrow = new BookBorrow(new Date(), "Borrower1", new Date(dueDate));
     })
 
@@ -181,10 +182,8 @@ describe('book-tests', function()
     });
 
     it('should return true when calling isOverdue on book that last borrow is overdue', function() {
-        let borrowDate = new Date();
-        borrowDate.setDate(borrowDate.getDate() - 10);
-        let dueDate = new Date();
-        dueDate.setDate(dueDate.getDate() - 2);
+        let borrowDate = DateUtils.WithAddedDays(new Date(), - 10);
+        let dueDate = DateUtils.WithAddedDays(new Date(), - 2);
         let overdueBookBorrow = new BookBorrow(borrowDate, "Borrower2", dueDate);
 
         book.lend(overdueBookBorrow);
@@ -203,8 +202,7 @@ describe('book-tests', function()
     it('should update last borrow due date when prolonging book', function() {
         book.lend(bookBorrow);
         let prolongBy = 10;
-        let newDueDate = new Date(dueDate);
-        newDueDate.setDate(newDueDate.getDate() + prolongBy);
+        let newDueDate = DateUtils.WithAddedDays(dueDate, prolongBy);
 
         book.prolong(prolongBy);
 
@@ -213,21 +211,17 @@ describe('book-tests', function()
     });
 
     it('should return today when calling expectedAvailabilityDate and book is available', function() {
-        let availabilityDate = book.expectedAvailabilityDate();
-        availabilityDate.setHours(0, 0, 0, 0);
-        let today = new Date();
-        today.setHours(0, 0, 0, 0);
+        let availabilityDate = DateUtils.DateOnly(book.expectedAvailabilityDate());
+        let today = DateUtils.DateOnly(new Date());
 
         expect(availabilityDate).to.eql(today);
     });
 
     it('should return due date when calling expectAvailabilityDate and book is borrowed', function() {
         book.lend(bookBorrow);
-        let availabilityDate = book.expectedAvailabilityDate();
-        availabilityDate.setHours(0, 0, 0, 0);
-        dueDate.setHours(0, 0, 0, 0);
+        let availabilityDate = DateUtils.DateOnly(book.expectedAvailabilityDate());
 
-        expect(availabilityDate).to.eql(dueDate);
+        expect(availabilityDate).to.eql(DateUtils.DateOnly(dueDate));
     });
 
     it('should set book as available when returned', function() {

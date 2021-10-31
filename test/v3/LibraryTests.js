@@ -2,6 +2,8 @@ var expect = require('chai').expect;
 var Book = require('../../src/v3/entities/Book');
 var BookBorrow = require('../../src/v3/entities/BookBorrow');
 var Library = require('../../src/v3/entities/Library');
+var DateUtils = require('./utils/DateUtils');
+var LibraryUtils = require('./utils/LibraryUtils');
 
 describe('library-tests', function()
 {
@@ -16,8 +18,7 @@ describe('library-tests', function()
         cleanCode = new Book(1, 'Clean Code: A handbook of Agile Software Craftmanship', 'Robert C. Martin', 2008, 41.68);
         learnAureInAMonthOfLunches = new Book(2, 'Learn Azure in a Month of Lunches', 'Iain Fouldsv', 2018, 27.49);
         cSharpInDepthFourthEdition = new Book(3, 'C# in Depth, Fourth Edition', 'Jon Skeet', 2019, 27.49);
-        dueDate = new Date();
-        dueDate.setDate(dueDate.getDate() + 4);
+        dueDate = DateUtils.WithAddedDays(new Date(), 4);
         bookBorrow = new BookBorrow(new Date(), "Borrower1", dueDate);
         library = new Library([
             cleanCode,
@@ -49,7 +50,7 @@ describe('library-tests', function()
     });
 
     it('should return array of overdue books when calling getAllOverdueBooks', function() {
-        var overdueBookBorrow = new BookBorrow(new Date(), "Borrower2", new Date((new Date()).getDate() - 3));
+        var overdueBookBorrow = LibraryUtils.CreateBookBorrow(new Date(), 'Borrower2', -3);
         cleanCode.lend(overdueBookBorrow);
         learnAureInAMonthOfLunches.lend(overdueBookBorrow);
 
@@ -75,10 +76,8 @@ describe('library-tests', function()
     });
 
     it('should return today date when calling getExpectedAvailabilityDateForTitle and book is available', function() {
-        let today = new Date();
-        today.setHours(0,0,0,0);
-        let expectedDate = library.getExpectedAvailabilityDateForTitle(cleanCode.getTitle());
-        expectedDate.setHours(0,0,0,0);
+        let today = DateUtils.DateOnly(new Date());
+        let expectedDate = DateUtils.DateOnly(library.getExpectedAvailabilityDateForTitle(cleanCode.getTitle()));
         
         expect(expectedDate).to.eql(today);
     });
