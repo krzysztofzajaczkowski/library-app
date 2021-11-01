@@ -12,4 +12,9 @@ jobs:
           node-version: '14'
       - run: npm install
       - run: npm run ci-test
-      
+      - name: Archive report artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: mochawesome report
+          path: |
+            mochawesome-report
