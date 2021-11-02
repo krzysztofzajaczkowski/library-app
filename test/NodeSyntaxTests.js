@@ -116,6 +116,24 @@ describe('node-syntax-tests', function()
         ).to.not.throw();    
     });
 
+    it('should not throw when using struct decomposition', function()
+    {
+        expect(() =>
+            eval(
+                `
+                var struct = {
+                    a: 1,
+                    b: '2'
+                }
+                var {a, b} = struct;
+
+                expect(a).to.eql(1);
+                expect(b).to.eql('2');
+                `
+            )
+        ).to.not.throw();    
+    });
+
     it('should not throw when using string interpolation', function()
     {
         expect(() =>
