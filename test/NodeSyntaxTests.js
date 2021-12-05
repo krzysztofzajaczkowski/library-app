@@ -173,7 +173,7 @@ describe('node-syntax-tests', function()
     {
         function changeThis()
         {
-            this.abc = 5;
+            this?.abc = 5;
         }
 
         changeThis();
