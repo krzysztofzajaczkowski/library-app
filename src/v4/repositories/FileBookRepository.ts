@@ -46,27 +46,17 @@ export class FileBookRepository implements IBookRepository {
                 )
         });
     }
+
     GetAll(): Promise<GetBookDto[]> {
         return new Promise((resolve, reject) => {
             promisify(fs.readdir)(`${this.fileStorePath}`)
-            .then((files) => {
-                console.log('Mapping fileNames to paths');
-                return files.map(fileName => `${this.fileStorePath}/${fileName}`);
-            })
-            .then(filePaths => {
-                console.log('Mapping filePaths to read promises');
-                return filePaths.map(path => promisify(fs.readFile)(path, { encoding: 'utf8'}));
-            })
-            .then(promises => {
-                console.log('Chaning to Promise.all');
-                return Promise.all(promises);
-            })
-            .then(data => {
-                console.log('Resolving all');
-                resolve(data.map(book => JSON.parse(book)))
-            });
+            .then((files) => files.map(fileName => `${this.fileStorePath}/${fileName}`))
+            .then(filePaths => filePaths.map(path => promisify(fs.readFile)(path, { encoding: 'utf8'})))
+            .then(promises => Promise.all(promises))
+            .then(data => resolve(data.map(book => JSON.parse(book))));
         });
     }
+
     Add(bookDto: AddBookDto): Promise<number> {
         return this.GetAll().then(
             books => {
@@ -99,6 +89,7 @@ export class FileBookRepository implements IBookRepository {
             }
         )
     }
+    
     Update(bookDto: UpdateBookDto): Promise<void> {
         return new Promise((resolve, reject) => {
             promisify(fs.stat)(`${this.fileStorePath}/${bookDto.number}.json`)
@@ -126,6 +117,7 @@ export class FileBookRepository implements IBookRepository {
                 )
         });
     }
+    
     Delete(bookNumber: number): Promise<void> {
         return new Promise((resolve, reject) => {
             promisify(fs.stat)(`${this.fileStorePath}/${bookNumber}.json`)
