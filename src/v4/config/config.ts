@@ -6,11 +6,13 @@ if (process.env.NODE_ENV !== 'production') {
 
 export interface AppConfig {
     port: string;
+    fileStorePath: string;
 }
 
 const config: AppConfig =
 {
-    port: process.env.PORT ?? ''
+    port: process.env.PORT ?? '',
+    fileStorePath: process.env.FILE_STORE_PATH ?? ''
 }
 
 export { config }
