@@ -15,7 +15,6 @@ export class Book {
         this._title = title;
         this._author = author;
         this._releaseYear = releaseYear;
-        // this._price = price;
         this.price = price;
         this._lastBorrowDate = null;
         this._lastBorrower = null;
