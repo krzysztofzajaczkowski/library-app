@@ -1,0 +1,245 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Simple API for book library",
+        "version": "1.0.0",
+        "title": "Library API",
+        "contact": {
+            "email": "krzysztof.m.zajaczkowski@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "schemes": ["http"],
+    "host": "localhost:3000",
+    "basePath": "/api",
+    "paths" : {
+        "/books" : {
+            "get" : {
+                "summary" : "Get all books",
+                "description": "Get all books",
+                "produces": ["application/json"],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/BookDto"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            },
+            "post" : {
+                "summary" : "Add book",
+                "description": "Add book",
+                "produces": ["application/json"],
+                "consumes": ["application/json"],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "book object",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/AddBookDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/books/{id}" : {
+            "get" : {
+                "summary" : "Get book",
+                "description": "Get book",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "book id for retrieval",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/BookDto"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid status value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            },
+            "put" : {
+                "summary" : "Update book",
+                "description": "Update book",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "book id that will be updated",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "book object",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/UpdateBookDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid status value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            },
+            "delete" : {
+                "summary" : "Delete book",
+                "description": "Delete book",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "book id that will be deleted",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "400": {
+                        "description": "Invalid status value",
+                        "schema": {
+                            "$ref": "#/definitions/InvalidResponse"
+                        }
+                    }
+                }
+            }
+        }
+    }, 
+    "definitions": {
+        "BookDto": {
+            "type": "object",
+            "properties": {
+                "number": {
+                     "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "author": {
+                    "type": "string"
+                },
+                "releaseYear": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "lastBorrowDate": {
+                    "type": "string",
+                    "format": "datetime"
+                },
+                "lastBorrower": {
+                    "type": "string"
+                },
+                "available": {
+                    "type": "string"
+                }
+            }
+        },
+        "AddBookDto": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "author": {
+                    "type": "string"
+                },
+                "releaseYear": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                }
+            }
+        },
+        "UpdateBookDto": {
+            "type": "object",
+            "properties": {
+                "number": {
+                     "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "author": {
+                    "type": "string"
+                },
+                "releaseYear": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                }
+            }
+        },
+        "InvalidResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+
+        }
+    }
+}
