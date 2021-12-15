@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "projects": {
+    "api": "apps/api",
+    "contract": "libs/contract",
+    "library": "apps/library",
+    "library-e2e": "apps/library-e2e"
+  }
+}
