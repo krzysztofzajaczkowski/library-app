@@ -3,7 +3,7 @@ name: "Node tests"
 on: [push, pull_request]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -11,7 +11,7 @@ jobs:
         with:
           node-version: '17'
       - run: npm install
-      - run: npm test:report
+      - run: npm run test:report
       - name: Archive report artifacts
         uses: actions/upload-artifact@v2
         with:
